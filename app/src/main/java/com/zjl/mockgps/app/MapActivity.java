@@ -17,6 +17,7 @@ import com.baidu.mapapi.search.route.*;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zjl.mockgps.app.adapter.SuggestInfoAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,13 +28,13 @@ import java.util.List;
  */
 public class MapActivity extends Activity implements OnGetGeoCoderResultListener, OnGetRoutePlanResultListener {
     private MapView mMapView;
-    private EditText startPoint;
-    private EditText endPoint;
+    public EditText startPoint;
+    public EditText endPoint;
     private Button pathSearch;
     private BaiduMap mBaiduMap;
     private Context mContext;
 
-    private popWindow mWindow;
+    private pointSettingWindow mWindow;
 
     private GeoCoder mSearch;
     private RoutePlanSearch mRoutePlanSearch;
@@ -122,7 +123,7 @@ public class MapActivity extends Activity implements OnGetGeoCoderResultListener
                         }
                     }
                 };
-                mWindow = new popWindow((Activity) mContext, mClickListener);
+                mWindow = new pointSettingWindow((Activity) mContext, mClickListener);
                 mWindow.showAtLocation(MapActivity.this.findViewById(R.id.mapview), Gravity.TOP, 0, 80);
             }
         });
@@ -162,8 +163,12 @@ public class MapActivity extends Activity implements OnGetGeoCoderResultListener
                 if (endPoint.getText().equals("")) {
                     Toast.makeText(mContext, "请设置结束点", Toast.LENGTH_SHORT).show();
                 }
-                PlanNode start = PlanNode.withCityNameAndPlaceName("上海", startPoint.getText().toString());
-                PlanNode end = PlanNode.withCityNameAndPlaceName("上海", endPoint.getText().toString());
+//                PlanNode start = PlanNode.withCityNameAndPlaceName("上海", startPoint.getText().toString());
+//                PlanNode end = PlanNode.withCityNameAndPlaceName("上海", endPoint.getText().toString());
+
+                PlanNode start = PlanNode.withCityNameAndPlaceName("上海","上海市闵行区虹梅南路立交桥");
+                PlanNode end = PlanNode.withCityNameAndPlaceName("上海", "上海市闵行区Y026(鲁山路)");
+
                 mRoutePlanSearch.walkingSearch(new WalkingRoutePlanOption().from(start).to(end));
 
             }
@@ -202,13 +207,14 @@ public class MapActivity extends Activity implements OnGetGeoCoderResultListener
             //起终点或途经点地址有岐义，通过以下接口获取建议查询信息
 
             SuggestAddrInfo info = walkingRouteResult.getSuggestAddrInfo();
-            ExpandableListView popListview = new ExpandableListView(mContext);
-
-            return;
+            SuggestInfoAdapter adapter = new SuggestInfoAdapter(mContext, info);
+            SuggestWindow popWindow = new SuggestWindow((MapActivity) mContext, adapter);
+            popWindow.showAtLocation(mMapView, Gravity.BOTTOM, 0, 0);
+            //return;
         }
         if (walkingRouteResult.error == SearchResult.ERRORNO.NO_ERROR) {
             nodeIndex = -1;
-
+            mBaiduMap.clear();
             RouteLine route = walkingRouteResult.getRouteLines().get(0);
             WalkingRouteOverlay overlay = new MyWalkingRouteOverlay(mBaiduMap);
             mBaiduMap.setOnMarkerClickListener(overlay);

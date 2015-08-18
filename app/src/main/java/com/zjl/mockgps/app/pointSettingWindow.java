@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 
 
-public class popWindow extends PopupWindow {
+public class pointSettingWindow extends PopupWindow {
 
     private View popupWindow;
 
@@ -15,7 +15,7 @@ public class popWindow extends PopupWindow {
     private Button makeStart;
     private Button makeEnd;
 
-    public popWindow(Activity context, View.OnClickListener itemListener) {
+    public pointSettingWindow(Activity context, View.OnClickListener itemListener) {
         super(context);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -43,7 +43,7 @@ public class popWindow extends PopupWindow {
         popupWindow.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
 
-                int height = popupWindow.findViewById(R.id.popLayout).getTop();
+                int height = popupWindow.findViewById(R.id.suggest).getTop();
                 int y = (int) event.getY();
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (y < height) {
