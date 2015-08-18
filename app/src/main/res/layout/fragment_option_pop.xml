@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.zjl.mockgps.app.popWindow"
+              android:id="@+id/popLayout">
+
+    <Button
+            android:id="@+id/makeStart"
+            android:text="设为起始点"
+            android:textSize="14sp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+    <Button
+            android:id="@+id/makeEnd"
+            android:textSize="14sp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="设为结束点"/>
+    <Button
+            android:id="@+id/cancel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="取消"
+            />
+</LinearLayout>

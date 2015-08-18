@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MockGPS</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="startPoint">起始位置</string>
+    <string name="endPoint">结束位置</string>
+    <string name="title_activity_pop_window">popWindow</string>
+</resources>

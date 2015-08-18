@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context=".MainActivity">
+
+    <TextView
+            android:id="@+id/tips"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:text="尽量不要把App放在后台执行哦"/>
+    <TextView
+            android:id="@+id/totalSteps"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:textSize="24sp"
+            android:text="总共0步"
+            />
+    <TextView
+            android:id="@+id/stepsNow"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:textSize="24sp"
+            android:text="现在0步"
+            />
+</LinearLayout>
+
