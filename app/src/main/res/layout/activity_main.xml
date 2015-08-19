@@ -31,5 +31,13 @@
             android:textSize="24sp"
             android:text="现在0步"
             />
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/reset"
+            android:text="重置"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            />
 </LinearLayout>
 

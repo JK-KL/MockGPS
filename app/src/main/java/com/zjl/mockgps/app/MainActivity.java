@@ -13,6 +13,8 @@ import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,6 +31,7 @@ public class MainActivity extends Activity {
 
     private TextView total;
     private TextView step;
+    private Button reset;
 
     private MyHandler handler = new MyHandler();
 
@@ -41,9 +44,17 @@ public class MainActivity extends Activity {
         Log.i("LocationService", "Activity创建");
         total = (TextView) findViewById(R.id.totalSteps);
         step = (TextView) findViewById(R.id.stepsNow);
+        reset=(Button)findViewById(R.id.reset);
         mContext = this;
-        Mytask task = new Mytask(this);
+        final Mytask task = new Mytask(this);
         task.execute();
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                task.cancel(true);
+                task.execute();
+            }
+        });
     }
 
     @Override
