@@ -89,5 +89,6 @@
     <orderEntry type="library" exported="" name="jackson-annotations-2.5.4" level="project" />
     <orderEntry type="library" exported="" name="BaiduLBS_Android" level="project" />
     <orderEntry type="library" exported="" name="jackson-databind-2.5.4" level="project" />
+    <orderEntry type="library" name="android-support-v4" level="project" />
   </component>
 </module>

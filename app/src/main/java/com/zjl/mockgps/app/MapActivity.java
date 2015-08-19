@@ -1,7 +1,10 @@
 package com.zjl.mockgps.app;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -14,12 +17,8 @@ import com.baidu.mapapi.search.core.RouteLine;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.geocode.*;
 import com.baidu.mapapi.search.route.*;
-import com.fasterxml.jackson.core.JsonEncoding;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zjl.mockgps.app.adapter.SuggestInfoAdapter;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -163,11 +162,11 @@ public class MapActivity extends Activity implements OnGetGeoCoderResultListener
                 if (endPoint.getText().equals("")) {
                     Toast.makeText(mContext, "请设置结束点", Toast.LENGTH_SHORT).show();
                 }
-//                PlanNode start = PlanNode.withCityNameAndPlaceName("上海", startPoint.getText().toString());
-//                PlanNode end = PlanNode.withCityNameAndPlaceName("上海", endPoint.getText().toString());
+                PlanNode start = PlanNode.withCityNameAndPlaceName("上海", startPoint.getText().toString());
+                PlanNode end = PlanNode.withCityNameAndPlaceName("上海", endPoint.getText().toString());
 
-                PlanNode start = PlanNode.withCityNameAndPlaceName("上海","上海市闵行区虹梅南路立交桥");
-                PlanNode end = PlanNode.withCityNameAndPlaceName("上海", "上海市闵行区Y026(鲁山路)");
+//                PlanNode start = PlanNode.withCityNameAndPlaceName("上海","上海市闵行区虹梅南路立交桥");
+//                PlanNode end = PlanNode.withCityNameAndPlaceName("上海", "上海市闵行区Y026(鲁山路)");
 
                 mRoutePlanSearch.walkingSearch(new WalkingRoutePlanOption().from(start).to(end));
 
@@ -202,14 +201,14 @@ public class MapActivity extends Activity implements OnGetGeoCoderResultListener
     public void onGetWalkingRouteResult(WalkingRouteResult walkingRouteResult) {
         if (walkingRouteResult == null || walkingRouteResult.error != SearchResult.ERRORNO.NO_ERROR) {
             Toast.makeText(mContext, "抱歉，未找到结果", Toast.LENGTH_SHORT).show();
+            //return;
         }
         if (walkingRouteResult.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
             //起终点或途经点地址有岐义，通过以下接口获取建议查询信息
-
             SuggestAddrInfo info = walkingRouteResult.getSuggestAddrInfo();
             SuggestInfoAdapter adapter = new SuggestInfoAdapter(mContext, info);
             SuggestWindow popWindow = new SuggestWindow((MapActivity) mContext, adapter);
-            popWindow.showAtLocation(mMapView, Gravity.BOTTOM, 0, 0);
+            popWindow.showAtLocation(mMapView, Gravity.CENTER, 0, 0);
             //return;
         }
         if (walkingRouteResult.error == SearchResult.ERRORNO.NO_ERROR) {
@@ -221,20 +220,31 @@ public class MapActivity extends Activity implements OnGetGeoCoderResultListener
             overlay.setData(walkingRouteResult.getRouteLines().get(0));
             overlay.addToMap();
             overlay.zoomToSpan();
-
-            Log.i("distance", route.getDistance() + "");
+            Toast.makeText(mContext, "该段路程一共" + route.getDistance() + "米", Toast.LENGTH_SHORT).show();
             List<WalkingRouteLine.WalkingStep> steps = route.getAllStep();
             List<LatLng> mPoints = new ArrayList<LatLng>();
             for (WalkingRouteLine.WalkingStep step : steps) {
                 mPoints.addAll(step.getWayPoints());
             }
-            ObjectMapper om = new ObjectMapper();
-            try {
-                JsonGenerator mJson = om.getFactory().createGenerator(System.out, JsonEncoding.UTF8);
-                mJson.writeObject(mPoints);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            AlertDialog.Builder builder=new AlertDialog.Builder(mContext);
+            builder.setMessage("是否开始模拟移动?")
+                    .setTitle("操作")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent mIntent=new Intent();
+
+                        }
+                    })
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+            AlertDialog dia=builder.create();
+            dia.show();
+
         }
     }
 

@@ -113,7 +113,7 @@ public class SuggestInfoAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean hasStableIds() {
-        return false;
+        return true;
     }
 
     @Override
@@ -158,11 +158,20 @@ public class SuggestInfoAdapter extends BaseExpandableListAdapter {
             return null;
         }
         mViewHolder.option = (Button) view.findViewById(R.id.option);
-        mViewHolder.option.setText(((PoiInfo) getChild(i, i1)).address);
+        mViewHolder.option.setText(((PoiInfo) getChild(i, i1)).address + ((PoiInfo) getChild(i, i1)).name);
         mViewHolder.option.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MapActivity)mContext).startPoint.setText(((PoiInfo) getChild(i, i1)).address);
+                switch (i) {
+                    case START:
+                        ((MapActivity) mContext).startPoint.setText(((PoiInfo) getChild(i, i1)).name);
+                        break;
+                    case END:
+                        ((MapActivity) mContext).endPoint.setText(((PoiInfo) getChild(i, i1)).name);
+                        break;
+                    case MIDWAY:
+                        break;
+                }
             }
         });
         return view;
