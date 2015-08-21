@@ -17,6 +17,7 @@ public class GPSCaculation {
         BigDecimal X2 = new BigDecimal(x2);
         this.K = Y2.subtract(Y1).divide(X2.subtract(X1),8, RoundingMode.HALF_UP);
         this.C = Y1.subtract(X1.multiply(K));
+
     }
 
     public BigDecimal returnX(BigDecimal Y) {

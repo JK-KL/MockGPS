@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -52,6 +53,7 @@ public class MapActivity extends Activity implements OnGetGeoCoderResultListener
         mSearch.setOnGetGeoCodeResultListener(this);
         mRoutePlanSearch = RoutePlanSearch.newInstance();
         mRoutePlanSearch.setOnGetRoutePlanResultListener(this);
+        // System.out.println(Build.VERSION.SDK_INT);
 
     }
 
@@ -222,18 +224,19 @@ public class MapActivity extends Activity implements OnGetGeoCoderResultListener
             overlay.zoomToSpan();
             Toast.makeText(mContext, "该段路程一共" + route.getDistance() + "米", Toast.LENGTH_SHORT).show();
             List<WalkingRouteLine.WalkingStep> steps = route.getAllStep();
-            List<LatLng> mPoints = new ArrayList<LatLng>();
+            final List<Coodinate> mPoints = new ArrayList<Coodinate>();
             for (WalkingRouteLine.WalkingStep step : steps) {
-                mPoints.addAll(step.getWayPoints());
+                mPoints.addAll(Coodinate.La2Cood(step.getWayPoints()));
             }
-            AlertDialog.Builder builder=new AlertDialog.Builder(mContext);
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setMessage("是否开始模拟移动?")
                     .setTitle("操作")
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent mIntent=new Intent();
-
+                            Intent mIntent = new Intent(MapActivity.this, MainActivity.class);
+                            mIntent.putParcelableArrayListExtra("points", (ArrayList<Coodinate>) mPoints);
+                            startActivity(mIntent);
                         }
                     })
                     .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -242,7 +245,7 @@ public class MapActivity extends Activity implements OnGetGeoCoderResultListener
                             dialogInterface.cancel();
                         }
                     });
-            AlertDialog dia=builder.create();
+            AlertDialog dia = builder.create();
             dia.show();
 
         }
