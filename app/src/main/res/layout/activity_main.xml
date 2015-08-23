@@ -12,7 +12,8 @@
             android:layout_marginTop="100dp"
             android:gravity="center"
             android:textSize="22sp"
-            android:text="尽量不要把App放在后台执行哦"/>
+            android:text="计算中,请稍等"
+            />
     <TextView
             android:id="@+id/totalSteps"
             android:layout_width="fill_parent"

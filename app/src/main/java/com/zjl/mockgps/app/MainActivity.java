@@ -28,6 +28,7 @@ public class MainActivity extends Activity {
 
     private TextView total;
     private TextView step;
+    private TextView tips;
     private Button reset;
 
     private MyHandler handler = new MyHandler();
@@ -44,6 +45,7 @@ public class MainActivity extends Activity {
         originalPoints = bundle.getParcelableArrayList("points");
         total = (TextView) findViewById(R.id.totalSteps);
         step = (TextView) findViewById(R.id.stepsNow);
+        tips = (TextView) findViewById(R.id.tips);
         reset = (Button) findViewById(R.id.reset);
         mContext = this;
         final Mytask task = new Mytask(this);
@@ -135,6 +137,7 @@ public class MainActivity extends Activity {
             getPoint();
             Message message = handler.obtainMessage(1, locations.size());
             handler.sendMessage(message);
+            handler.sendMessage(handler.obtainMessage(2, "尽量不要把App放在后台执行哦"));
             Log.i("LocationService", "定位服务开始!");
             //  Toast.makeText(mContext,"定位服务开始",Toast.LENGTH_SHORT);
             int count = 0;
@@ -505,6 +508,7 @@ public class MainActivity extends Activity {
                     po.add(points.get(i));
                     continue;
                 }
+
                 GPSC.cacu(points.get(i).longitude, points.get(i).latitude, points.get(i + 1).longitude, points.get(i + 1).latitude);
                 if (points.get(i + 1).longitude - points.get(i).longitude > 0) {
                     BigDecimal bd = new BigDecimal(points.get(i + 1).longitude).subtract(new BigDecimal(points.get(i).longitude)).setScale(6, RoundingMode.HALF_UP).multiply(new BigDecimal(1000000));
@@ -543,12 +547,12 @@ public class MainActivity extends Activity {
                     break;
                 case 2:
                     Toast.makeText(mContext, msg.obj.toString(), Toast.LENGTH_SHORT).show();
-
                     break;
+                case 3:
+                    tips.setText(msg.obj.toString());
                 default:
                     break;
             }
-
             super.handleMessage(msg);
         }
     }
