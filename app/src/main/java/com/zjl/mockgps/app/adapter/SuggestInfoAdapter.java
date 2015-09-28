@@ -1,9 +1,7 @@
-package com.zjl.mockgps.app.adapter;
+package com.zjl.mockgps.app.Adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.provider.Telephony;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.route.SuggestAddrInfo;
-import com.zjl.mockgps.app.MapActivity;
+import com.zjl.mockgps.app.Activities.MapActivity;
 import com.zjl.mockgps.app.R;
 
 import java.util.List;
