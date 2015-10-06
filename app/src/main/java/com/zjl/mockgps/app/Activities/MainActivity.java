@@ -124,11 +124,11 @@ public class MainActivity extends BaseActivity {
             Log.i("LocationService", "定位服务开始!");
             //  Toast.makeText(mContext,"定位服务开始",Toast.LENGTH_SHORT);
             int count = 0;
-            while (!this.isCancelled()) {
+            while (!this.isCancelled()&& count < locations.size()) {
                 long startTime = Calendar.getInstance().getTimeInMillis();
                 long endTime = Calendar.getInstance().getTimeInMillis();
                 int time = 1000 / Speed;
-                while (endTime - startTime < time && locations.size() < count) {
+                while (endTime - startTime < time ) {
                     locationManager.setTestProviderLocation("gps", locations.get(count));
                     endTime = Calendar.getInstance().getTimeInMillis();
                 }
