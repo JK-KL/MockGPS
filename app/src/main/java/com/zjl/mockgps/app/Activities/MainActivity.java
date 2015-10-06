@@ -2,15 +2,18 @@ package com.zjl.mockgps.app.Activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.*;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.zjl.mockgps.app.Algorithm.CEAlgorithm;
@@ -28,6 +31,8 @@ public class MainActivity extends BaseActivity {
     private TextView step;
     private TextView tips;
     private Button reset;
+    private Button speedSet;
+    private EditText speed;
 
     private MyHandler handler = new MyHandler();
     private final Mytask task = new Mytask(this);
@@ -35,6 +40,7 @@ public class MainActivity extends BaseActivity {
     private Context mContext;
     private List<Location> locations = new ArrayList<Location>();
     private LocationManager locationManager;
+    int Speed = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,22 +49,34 @@ public class MainActivity extends BaseActivity {
         Log.i("LocationService", "Activity创建");
         Bundle bundle = getIntent().getExtras();
         originalPoints = bundle.getParcelableArrayList("points");
+        if (savedInstanceState != null) {
+            locations = savedInstanceState.getParcelableArrayList("location");
+        }
         Init();
         task.execute();
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 task.cancel(true);
+                ((Activity) mContext).finish();
             }
         });
     }
 
     public void Init() {
-        total = (TextView) findViewById(R.id.totalSteps);
-        step = (TextView) findViewById(R.id.stepsNow);
-        tips = (TextView) findViewById(R.id.tips);
-        reset = (Button) findViewById(R.id.reset);
+        total = $(R.id.totalSteps);
+        step = $(R.id.stepsNow);
+        tips = $(R.id.tips);
+        reset = $(R.id.reset);
+        speed = $(R.id.speed);
+        speedSet = $(R.id.speedSet);
         mContext = this;
+        speedSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Speed = Integer.parseInt(speed.getText().toString());
+            }
+        });
     }
 
     @Override
@@ -106,20 +124,19 @@ public class MainActivity extends BaseActivity {
             Log.i("LocationService", "定位服务开始!");
             //  Toast.makeText(mContext,"定位服务开始",Toast.LENGTH_SHORT);
             int count = 0;
-            for (final Location l : locations) {
+            while (!this.isCancelled()) {
                 long startTime = Calendar.getInstance().getTimeInMillis();
                 long endTime = Calendar.getInstance().getTimeInMillis();
-                while (endTime - startTime < 1000) {
-                    locationManager.setTestProviderLocation("gps", l);
-                    //Log.i("LocationService", "发送位置" + l);
+                int time = 1000 / Speed;
+                while (endTime - startTime < time && locations.size() < count) {
+                    locationManager.setTestProviderLocation("gps", locations.get(count));
                     endTime = Calendar.getInstance().getTimeInMillis();
-
                 }
                 publishProgress(count++);
             }
             Log.i("LocationService", "定位结束");
             handler.sendMessage(handler.obtainMessage(2, "完成啦"));
-            return null;
+            return "";
         }
 
         public void getPoint() {
@@ -157,7 +174,7 @@ public class MainActivity extends BaseActivity {
                     total.setText("总共" + msg.obj + "米");
                     break;
                 case 2:
-                    Toast.makeText(mContext, msg.obj.toString(), Toast.LENGTH_SHORT).show();
+                    tips.setText(msg.obj.toString());
                     break;
                 case 3:
                     tips.setText(msg.obj.toString());
@@ -170,40 +187,20 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.i("LocationService", "Activity销毁");
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            ((Activity) mContext).finish();
+            task.cancel(true);
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        Log.i("LocationService", "Activity暂停");
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("location", (ArrayList) locations);
+        Log.i("Activity Info", "onSaveInstanceState");
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.i("LocationService", "Activity复活");
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.i("LocationService", "Activity重新开始");
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.i("LocationService", "Activity开始");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.i("LocationService", "Activity停止");
-    }
-
 
 }

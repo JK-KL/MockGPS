@@ -21,11 +21,7 @@ public class CEAlgorithm {
      */
     private List<Coodinate> originalCood;
     /**
-     * 速度 单位m/s
-     */
-    private int Speed = 1;
-    /**
-     * 常量 用于调整生成点的空隙
+     * 常量 用于调整生成点的空隙(0.0~1.0 不包含0)
      */
     private float BasicC = 1;
 
@@ -33,10 +29,6 @@ public class CEAlgorithm {
 
     public void setOriginalCood(List<Coodinate> cood) {
         this.originalCood = cood;
-    }
-
-    public void setSpeed(int s) {
-        this.Speed = s;
     }
 
     public void setBasicC(float mutiC) {
@@ -58,7 +50,7 @@ public class CEAlgorithm {
                 continue;
             }
 
-            int points = (int) (distance / Speed * BasicC);
+            int points = (int) (distance * BasicC);
             if (Debug) {
                 dis += distance;
                 this.points += points;
@@ -90,7 +82,6 @@ public class CEAlgorithm {
 
 
         }
-        Log.i("distance", dis + "" + "%%%%" + this.points);
         return Coodinates;
     }
 

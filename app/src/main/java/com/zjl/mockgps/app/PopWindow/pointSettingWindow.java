@@ -2,6 +2,7 @@ package com.zjl.mockgps.app.PopWindow;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.*;
 import android.widget.Button;
 import android.widget.PopupWindow;
@@ -36,7 +37,9 @@ public class pointSettingWindow extends PopupWindow {
         makeEnd.setOnClickListener(itemListener);
 
         this.setContentView(popupWindow);
-        this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        this.setWidth((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP
+                , 300
+                , context.getResources().getDisplayMetrics()));
         this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         this.setFocusable(true);
         this.setAnimationStyle(R.style.popWindowAnimation);

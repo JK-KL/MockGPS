@@ -2,6 +2,7 @@ package com.zjl.mockgps.app.Adapter;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import com.zjl.mockgps.app.Activities.MapActivity;
 import com.zjl.mockgps.app.R;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -128,13 +131,15 @@ public class SuggestInfoAdapter extends BaseExpandableListAdapter {
         mViewHolder.groupName = (TextView) view.findViewById(R.id.groupName);
         switch (i) {
             case START:
-                mViewHolder.groupName.setText("请确定起始点");
+                mViewHolder.groupName.setText("起始点");
+                mViewHolder.groupName.setTextColor(Color.WHITE);
                 break;
             case END:
-                mViewHolder.groupName.setText("请确定结束点");
+                mViewHolder.groupName.setText("结束点");
+                mViewHolder.groupName.setTextColor(Color.WHITE);
                 break;
             case MIDWAY:
-                mViewHolder.groupName.setText("请确定中途点");
+                mViewHolder.groupName.setText("中途点");
                 break;
         }
         return view;
@@ -157,15 +162,20 @@ public class SuggestInfoAdapter extends BaseExpandableListAdapter {
         }
         mViewHolder.option = (Button) view.findViewById(R.id.option);
         mViewHolder.option.setText(((PoiInfo) getChild(i, i1)).address + ((PoiInfo) getChild(i, i1)).name);
+        String wordReg = "[a-zA-Z][0-9]{1,4}";
+        Pattern pattern = Pattern.compile(wordReg);
+        final Matcher matcher = pattern.matcher(((PoiInfo) getChild(i, i1)).address + ((PoiInfo) getChild(i, i1)).name);
         mViewHolder.option.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 switch (i) {
                     case START:
-                        ((MapActivity) mContext).startPoint.setText(((PoiInfo) getChild(i, i1)).name);
+                        ((MapActivity) mContext).startPoint.setText(matcher.replaceAll(""));
+                        ((MapActivity) mContext).popWindow.dismiss();
                         break;
                     case END:
-                        ((MapActivity) mContext).endPoint.setText(((PoiInfo) getChild(i, i1)).name);
+                        ((MapActivity) mContext).endPoint.setText(matcher.replaceAll(""));
+                        ((MapActivity) mContext).popWindow.dismiss();
                         break;
                     case MIDWAY:
                         break;

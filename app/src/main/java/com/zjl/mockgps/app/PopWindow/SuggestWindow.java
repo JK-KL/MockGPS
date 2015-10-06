@@ -3,6 +3,7 @@ package com.zjl.mockgps.app.PopWindow;
 import android.app.Activity;
 import android.content.Context;
 import android.text.Layout;
+import android.util.TypedValue;
 import android.view.*;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -17,7 +18,7 @@ public class SuggestWindow extends PopupWindow {
 
     private ExpandableListView mExpandableListView;
 
-    public SuggestWindow(Activity mContext,BaseExpandableListAdapter adapter) {
+    public SuggestWindow(Activity mContext, BaseExpandableListAdapter adapter) {
         super(mContext);
 
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -25,7 +26,9 @@ public class SuggestWindow extends PopupWindow {
         mExpandableListView = (ExpandableListView) suggestPopWindow.findViewById(R.id.suggest);
         mExpandableListView.setAdapter(adapter);
         this.setContentView(suggestPopWindow);
-        this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        this.setWidth((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP
+                , 300
+                , mContext.getResources().getDisplayMetrics()));
         this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         this.setFocusable(true);
         this.setAnimationStyle(R.style.popWindowAnimation);
