@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MockGPS</string>
+    <string name="app_name">模拟位置</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

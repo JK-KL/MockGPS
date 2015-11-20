@@ -31,6 +31,10 @@ import com.zjl.mockgps.app.Adapter.SuggestInfoAdapter;
 import com.zjl.mockgps.app.R;
 import com.zjl.mockgps.app.PopWindow.SuggestWindow;
 import com.zjl.mockgps.app.PopWindow.pointSettingWindow;
+import net.youmi.android.banner.AdSize;
+import net.youmi.android.banner.AdView;
+import net.youmi.android.banner.AdViewListener;
+import net.youmi.android.spot.SpotManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +77,8 @@ public class MapActivity extends BaseActivity implements OnGetGeoCoderResultList
         mSearch.setOnGetGeoCodeResultListener(this);
         mRoutePlanSearch = RoutePlanSearch.newInstance();
         mRoutePlanSearch.setOnGetRoutePlanResultListener(this);
+
+        showBanner();
 
     }
 
@@ -334,8 +340,48 @@ public class MapActivity extends BaseActivity implements OnGetGeoCoderResultList
     protected void onStop() {
         // TODO Auto-generated method stub
         mLocationClient.stop();
+
+        SpotManager.getInstance(this).onStop();
         super.onStop();
     }
 
+    private void showBanner() {
+
+        // 实例化LayoutParams(重要)
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT);
+        // 设置广告条的悬浮位置
+        layoutParams.gravity = Gravity.TOP | Gravity.RIGHT; // 这里示例为右下角
+        // 实例化广告条
+        AdView adView = new AdView(this, AdSize.FIT_SCREEN);
+        // 调用Activity的addContentView函数
+
+        // 监听广告条接口
+        adView.setAdListener(new AdViewListener() {
+
+            @Override
+            public void onSwitchedAd(AdView arg0) {
+                Log.i("YoumiAdDemo", "广告条切换");
+            }
+
+            @Override
+            public void onReceivedAd(AdView arg0) {
+                Log.i("YoumiAdDemo", "请求广告成功");
+            }
+
+            @Override
+            public void onFailedToReceivedAd(AdView arg0) {
+                Log.i("YoumiAdDemo", "请求广告失败");
+            }
+        });
+        ((Activity) this).addContentView(adView, layoutParams);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        SpotManager.getInstance(this).onDestroy();
+        super.onDestroy();
+    }
 
 }

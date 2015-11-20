@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        jcenter()
+         jcenter{ url "http://jcenter.bintray.com/"}
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.1.1'
@@ -9,12 +9,12 @@ buildscript {
 apply plugin: 'com.android.application'
 
 repositories {
-    jcenter()
+    jcenter{ url "http://jcenter.bintray.com/"}
 }
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "23.0.0 rc3"
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "com.zjl.mockgps.app"
@@ -26,9 +26,9 @@ android {
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
-    }
 
+    targetCompatibility JavaVersion.VERSION_1_7
+}
     buildTypes {
         release {
             minifyEnabled true
@@ -36,7 +36,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            minifyEnabled true
+            minifyEnabled false
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
