@@ -25,16 +25,12 @@ import com.baidu.mapapi.search.geocode.*;
 import com.baidu.mapapi.search.route.*;
 import com.zjl.mockgps.app.Base.BaseActivity;
 import com.zjl.mockgps.app.Base.BaseApplication;
-import com.zjl.mockgps.app.Common.CollectionExtension;
 import com.zjl.mockgps.app.Model.Coodinate;
-import com.zjl.mockgps.app.Adapter.SuggestInfoAdapter;
 import com.zjl.mockgps.app.R;
 import com.zjl.mockgps.app.PopWindow.SuggestWindow;
 import com.zjl.mockgps.app.PopWindow.pointSettingWindow;
-import net.youmi.android.banner.AdSize;
-import net.youmi.android.banner.AdView;
-import net.youmi.android.banner.AdViewListener;
-import net.youmi.android.spot.SpotManager;
+import com.zjl.mockgps.app.common.CollectionExtension;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +74,6 @@ public class MapActivity extends BaseActivity implements OnGetGeoCoderResultList
         mRoutePlanSearch = RoutePlanSearch.newInstance();
         mRoutePlanSearch.setOnGetRoutePlanResultListener(this);
 
-        showBanner();
 
     }
 
@@ -246,8 +241,6 @@ public class MapActivity extends BaseActivity implements OnGetGeoCoderResultList
         if (walkingRouteResult.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
             //起终点或途经点地址有岐义，通过以下接口获取建议查询信息
             SuggestAddrInfo info = walkingRouteResult.getSuggestAddrInfo();
-            SuggestInfoAdapter adapter = new SuggestInfoAdapter(mContext, info);
-            popWindow = new SuggestWindow((MapActivity) mContext, adapter);
             popWindow.showAtLocation(mMapView, Gravity.TOP, 0, 0);
             //return;
         }
@@ -341,46 +334,13 @@ public class MapActivity extends BaseActivity implements OnGetGeoCoderResultList
         // TODO Auto-generated method stub
         mLocationClient.stop();
 
-        SpotManager.getInstance(this).onStop();
         super.onStop();
     }
 
-    private void showBanner() {
-
-        // 实例化LayoutParams(重要)
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT);
-        // 设置广告条的悬浮位置
-        layoutParams.gravity = Gravity.TOP | Gravity.RIGHT; // 这里示例为右下角
-        // 实例化广告条
-        AdView adView = new AdView(this, AdSize.FIT_SCREEN);
-        // 调用Activity的addContentView函数
-
-        // 监听广告条接口
-        adView.setAdListener(new AdViewListener() {
-
-            @Override
-            public void onSwitchedAd(AdView arg0) {
-                Log.i("YoumiAdDemo", "广告条切换");
-            }
-
-            @Override
-            public void onReceivedAd(AdView arg0) {
-                Log.i("YoumiAdDemo", "请求广告成功");
-            }
-
-            @Override
-            public void onFailedToReceivedAd(AdView arg0) {
-                Log.i("YoumiAdDemo", "请求广告失败");
-            }
-        });
-        ((Activity) this).addContentView(adView, layoutParams);
-    }
 
 
     @Override
     protected void onDestroy() {
-        SpotManager.getInstance(this).onDestroy();
         super.onDestroy();
     }
 

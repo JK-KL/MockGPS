@@ -69,29 +69,6 @@
           >
         </activity>
 
-        <!-- 添加必须的组件 -->
-        <service android:name="net.youmi.android.AdService" >
-        </service>
-
-        <activity
-                android:name="net.youmi.android.AdBrowser"
-                android:theme="@android:style/Theme.NoTitleBar" >
-        </activity>
-
-        <receiver android:name="net.youmi.android.AdReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <action android:name="android.intent.action.PACKAGE_INSTALL" />
-
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
-
-        <!-- 有米渠道号(可选配置) 渠道号不能带空格，类型为整数 -->
-        <meta-data
-                android:name="YOUMI_CHANNEL"
-                android:value="10190" >
-        </meta-data>
     </application>
 
 </manifest>

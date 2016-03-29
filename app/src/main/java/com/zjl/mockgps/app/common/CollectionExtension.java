@@ -1,4 +1,4 @@
-package com.zjl.mockgps.app.Common;
+package com.zjl.mockgps.app.common;
 
 import java.util.Collection;
 

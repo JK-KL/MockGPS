@@ -2,7 +2,7 @@ package com.zjl.mockgps.app.Algorithm;
 
 import android.util.Log;
 import com.zjl.mockgps.app.Model.Coodinate;
-import com.zjl.mockgps.app.Common.CollectionExtension;
+import com.zjl.mockgps.app.common.CollectionExtension;
 
 import java.util.ArrayList;
 import java.util.List;

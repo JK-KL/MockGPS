@@ -19,9 +19,9 @@ import android.widget.Toast;
 import com.zjl.mockgps.app.Algorithm.CEAlgorithm;
 import com.zjl.mockgps.app.Base.BaseActivity;
 import com.zjl.mockgps.app.Model.Coodinate;
-import com.zjl.mockgps.app.Common.CollectionExtension;
 import com.zjl.mockgps.app.Algorithm.PositionUtils;
 import com.zjl.mockgps.app.R;
+import com.zjl.mockgps.app.common.CollectionExtension;
 
 import java.util.*;
 

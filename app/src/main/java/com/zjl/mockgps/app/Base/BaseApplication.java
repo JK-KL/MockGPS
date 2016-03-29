@@ -6,8 +6,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import com.baidu.mapapi.SDKInitializer;
-import com.zjl.mockgps.app.Common.CollectionExtension;
-import net.youmi.android.AdManager;
+import com.zjl.mockgps.app.common.CollectionExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,6 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         SDKInitializer.initialize(this);
-        AdManager.getInstance(this).init("85aa56a59eac8b3d", "a14006f66f58d5d7");
     }
 
     public static List<Activity> activityList = new ArrayList<Activity>();
